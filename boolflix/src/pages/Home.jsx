@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import Navbar from '../components/NavBar'
 import { getFlag } from '../utils/flags'
-import { getPosterUrl } from '../utils/imageUtils'
+import { getPosterUrl } from '../utils/imageUtilis'
+import { getStarCount } from '../utils/voteUtils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons'
 
 function Home() {
     const [films, setFilms] = useState([])
@@ -12,15 +16,15 @@ function Home() {
         const tvUrl = `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${query}&language=it-IT`
 
         Promise.all([
-            window.fetch(movieUrl).then(res => res.json()),
-            window.fetch(tvUrl).then(res => res.json())
+            fetch(movieUrl).then(res => res.json()),
+            fetch(tvUrl).then(res => res.json())
         ])
             .then(([movieData, tvData]) => {
                 const movies = movieData.results.map(movie => ({ ...movie, type: 'movie' }))
                 const tvShows = tvData.results.map(tv => ({ ...tv, type: 'tv' }))
                 setFilms([...movies, ...tvShows])
             })
-            .catch(err => console.log('Errore fetch:', err))
+            .catch(err => console.error('Errore nella fetch:', err))
     }
 
     return (
@@ -28,22 +32,44 @@ function Home() {
             <Navbar onSearch={handleSearch} />
 
             <div>
-                {films.map((item) => {
+                {films.map(item => {
                     const flagImg = getFlag(item.original_language)
+                    const posterUrl = getPosterUrl(item.poster_path)
+                    const stars = getStarCount(item.vote_average)
 
                     return (
                         <div key={item.id}>
-                            <h3>{item.type === 'movie' ? item.title : item.name} ({item.type.toUpperCase()})</h3>
+                            <h3>
+                                {item.type === 'movie' ? item.title : item.name} ({item.type.toUpperCase()})
+                            </h3>
+
+                            {posterUrl && (
+                                <img src={posterUrl} alt={item.title || item.name} />
+                            )}
+
                             <p>Titolo originale: {item.original_title || item.original_name}</p>
+
                             <p>
-                                Lingua:
+                                Lingua:{' '}
                                 {flagImg ? (
-                                    <img className='flag-img' src={flagImg} alt={item.original_language} />
+                                    <img className="flag-img" src={flagImg} alt={item.original_language} />
                                 ) : (
                                     item.original_language
                                 )}
                             </p>
-                            <p>Voto: {item.vote_average}</p>
+
+                            <p>
+                                Voto:{' '}
+                                {[...Array(5)].map((_, index) => (
+                                    <FontAwesomeIcon
+                                        key={index}
+                                        icon={index < stars ? solidStar : regularStar}
+                                    />
+                                ))}
+                            </p>
+
+                            <p>Trama: {item.overview || 'Nessuna trama disponibile.'}</p>
+
                             <hr />
                         </div>
                     )
