@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from '../components/NavBar'
 import { getFlag } from '../utils/flags'
+import { getPosterUrl } from '../utils/imageUtils'
 
 function Home() {
     const [films, setFilms] = useState([])
