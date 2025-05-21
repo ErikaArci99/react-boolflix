@@ -20,7 +20,6 @@ function Navbar({ onSearch }) {
                 <img src={LogoB} alt="Logo" width="100" className="me-2" />
             </a>
 
-            {/* Hamburger button per mobile */}
             <button
                 className="navbar-toggler"
                 type="button"
