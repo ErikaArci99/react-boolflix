@@ -3,3 +3,9 @@
   height: auto;
   vertical-align: middle;
 }
+
+/* navbar */
+
+.bg-black {
+  background-color: black;
+}
