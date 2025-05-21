@@ -31,49 +31,50 @@ function Home() {
         <div>
             <Navbar onSearch={handleSearch} />
 
-            <div>
-                {films.map(item => {
-                    const flagImg = getFlag(item.original_language)
-                    const posterUrl = getPosterUrl(item.poster_path)
-                    const stars = getStarCount(item.vote_average)
+            <div className="container my-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    {films.map(item => {
+                        const flagImg = getFlag(item.original_language)
+                        const posterUrl = getPosterUrl(item.poster_path)
+                        const stars = getStarCount(item.vote_average)
+                        const title = item.type === 'movie' ? item.title : item.name
+                        const originalTitle = item.original_title || item.original_name
+                        const overview = item.overview || 'Nessuna trama disponibile.'
 
-                    return (
-                        <div key={item.id}>
-                            <h3>
-                                {item.type === 'movie' ? item.title : item.name} ({item.type.toUpperCase()})
-                            </h3>
+                        return (
+                            <div key={item.id} className="col">
+                                <div className="film-card position-relative rounded overflow-hidden shadow-sm">
+                                    {posterUrl && (
+                                        <img src={posterUrl} alt={title} className="img-fluid poster-img" />
+                                    )}
 
-                            {posterUrl && (
-                                <img src={posterUrl} alt={item.title || item.name} />
-                            )}
-
-                            <p>Titolo originale: {item.original_title || item.original_name}</p>
-
-                            <p>
-                                Lingua:{' '}
-                                {flagImg ? (
-                                    <img className="flag-img" src={flagImg} alt={item.original_language} />
-                                ) : (
-                                    item.original_language
-                                )}
-                            </p>
-
-                            <p>
-                                Voto:{' '}
-                                {[...Array(5)].map((_, index) => (
-                                    <FontAwesomeIcon
-                                        key={index}
-                                        icon={index < stars ? solidStar : regularStar}
-                                    />
-                                ))}
-                            </p>
-
-                            <p>Trama: {item.overview || 'Nessuna trama disponibile.'}</p>
-
-                            <hr />
-                        </div>
-                    )
-                })}
+                                    <div className="film-overlay text-white p-3">
+                                        <h5>{title} ({item.type.toUpperCase()})</h5>
+                                        <p><strong>Titolo originale:</strong> {originalTitle}</p>
+                                        <p>
+                                            <strong>Lingua:</strong>{' '}
+                                            {flagImg ? (
+                                                <img className="flag-img ms-1" src={flagImg} alt={item.original_language} />
+                                            ) : (
+                                                item.original_language
+                                            )}
+                                        </p>
+                                        <p>
+                                            <strong>Voto:</strong>{' '}
+                                            {[...Array(5)].map((_, index) => (
+                                                <FontAwesomeIcon
+                                                    key={index}
+                                                    icon={index < stars ? solidStar : regularStar}
+                                                />
+                                            ))}
+                                        </p>
+                                        <p><strong>Trama:</strong> {overview}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )
