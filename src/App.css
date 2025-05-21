@@ -1,3 +1,17 @@
+body {
+  background-color: #141414;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* bandiere */
+
 .flag-img {
   width: 2rem;
   height: auto;
@@ -8,4 +22,44 @@
 
 .bg-black {
   background-color: black;
+}
+
+/* card */
+
+.film-card {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  height: 100%;
+  position: relative;
+}
+
+.film-card:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0.25rem;
+}
+
+.film-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  overflow-y: auto;
+  border-radius: 0.25rem;
+}
+
+.film-card:hover .film-overlay {
+  opacity: 1;
 }
